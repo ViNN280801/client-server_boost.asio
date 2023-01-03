@@ -46,7 +46,7 @@ class Server
 {
 private:
     boost::asio::io_service m_ios;
-    std::unique_ptr<std::thread> m_th;
+    std::unique_ptr<std::jthread> m_jth;
     std::atomic_flag m_stop;
 
 protected:
@@ -66,7 +66,7 @@ public:
     template <std::unsigned_integral T>
     inline void start(const T &port) noexcept
     {
-        m_th.reset(new std::thread([this, port]()
+        m_jth.reset(new std::jthread([this, port]()
                                    { run(port); }));
     }
 
