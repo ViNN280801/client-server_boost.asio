@@ -26,9 +26,8 @@ void Service::handleClient(boost::shared_ptr<boost::asio::ip::tcp::socket> sock)
 
 void Service::startHandlingClient(boost::shared_ptr<boost::asio::ip::tcp::socket> sock)
 {
-    std::thread th(([this, sock]()
+    std::jthread th(([this, sock]()
                     { handleClient(sock); }));
-    th.detach();
 }
 
 void Acceptor::accept() noexcept
