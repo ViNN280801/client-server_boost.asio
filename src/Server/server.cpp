@@ -19,6 +19,9 @@ void Service::handleClient(boost::shared_ptr<boost::asio::ip::tcp::socket> sock)
         std::cerr << "Error occured! Error code = " << e.code() << ". Message: " << e.what() << std::endl;
         exit(EXIT_FAILURE);
     }
+
+    // Clean-up
+    delete this;
 }
 
 void Service::startHandlingClient(boost::shared_ptr<boost::asio::ip::tcp::socket> sock)
