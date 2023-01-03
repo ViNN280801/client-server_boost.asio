@@ -40,5 +40,5 @@ void Acceptor::accept() noexcept
 void Server::stop() noexcept
 {
     m_stop.test_and_set();
-    m_th->join();
+    m_jth->join();
 }
