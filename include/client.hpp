@@ -78,6 +78,4 @@ public:
     const std::string receiveMessage() noexcept;
 
     const std::string processingClientMessage();
-
-    virtual ~Client() = default;
 };

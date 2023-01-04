@@ -18,7 +18,12 @@ public:
     }
 
     void handleClient(boost::shared_ptr<boost::asio::ip::tcp::socket> sock);
-    void startHandlingClient(boost::shared_ptr<boost::asio::ip::tcp::socket> sock);
+
+    inline void startHandlingClient(boost::shared_ptr<boost::asio::ip::tcp::socket> sock)
+    {
+        std::jthread th(([this, sock]()
+                         { handleClient(sock); }));
+    }
 };
 
 class Acceptor
@@ -67,8 +72,11 @@ public:
     inline void start(const T &port) noexcept
     {
         m_jth.reset(new std::jthread([this, port]()
-                                   { run(port); }));
+                                     { run(port); }));
     }
 
-    void stop() noexcept;
+    inline void stop() noexcept
+    {
+        m_stop.test_and_set();
+    }
 };

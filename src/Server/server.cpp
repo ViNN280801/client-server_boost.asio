@@ -24,21 +24,9 @@ void Service::handleClient(boost::shared_ptr<boost::asio::ip::tcp::socket> sock)
     delete this;
 }
 
-void Service::startHandlingClient(boost::shared_ptr<boost::asio::ip::tcp::socket> sock)
-{
-    std::jthread th(([this, sock]()
-                    { handleClient(sock); }));
-}
-
 void Acceptor::accept() noexcept
 {
     boost::shared_ptr<boost::asio::ip::tcp::socket> sock(new boost::asio::ip::tcp::socket(m_ios));
     m_acceptor.accept(*sock.get());
     (new Service)->startHandlingClient(sock);
-}
-
-void Server::stop() noexcept
-{
-    m_stop.test_and_set();
-    m_jth->join();
 }
