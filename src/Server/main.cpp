@@ -6,7 +6,7 @@ int main()
 
     try
     {
-        srv.start(PORT_NUM);
+        srv.start(DEFAULT_PORT_NUMBER);
         std::this_thread::sleep_for(std::chrono::seconds(1));
         srv.stop();
     }

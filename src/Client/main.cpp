@@ -5,20 +5,17 @@ int main()
     try
     {
         // Creation of client sockett
-        Client client(RAW_IP_ADDR, PORT_NUM);
+        Client client(DEFAULT_IP_ADDRESS_V4, DEFAULT_PORT_NUMBER);
 
         // Connecting to client socket
         client.Connect();
 
-        while (true)
+        std::string str("");
+        while (str not_eq "quit\n")
         {
-            std::osyncstream(std::cout) << "Sending request to the server... " << std::endl;
-            std::string str{client.processingClientMessage()};
-
-            if (str == "quit\n")
-                break;
-
-            std::osyncstream(std::cout) << "Response received: " << str << std::endl;
+            std::osyncstream(std::cout) << "Sending request to the server...\n";
+            str = client.processingClientMessage();
+            std::osyncstream(std::cout) << "Response received: " << str << '\n';
         }
 
         client.Close();
