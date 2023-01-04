@@ -41,7 +41,9 @@ private:
     ClientErrorHandler errorHandler;
 
 public:
-    explicit Client() : m_ep(boost::asio::ip::address::from_string(RAW_IP_ADDR), PORT_NUM), m_sock(m_ios)
+    explicit Client()
+        : m_ep(boost::asio::ip::address::from_string(DEFAULT_IP_ADDRESS_V4), DEFAULT_PORT_NUMBER),
+          m_sock(m_ios)
     {
         if (errorHandler.handleSocketCreation(m_sock, m_ep))
             exit(EXIT_FAILURE);
