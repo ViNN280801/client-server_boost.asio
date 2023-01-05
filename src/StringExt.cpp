@@ -1,12 +1,12 @@
-#include "../include/strmanip.hpp"
+#include "../include/StringExt.hpp"
 
-strmanip::strmanip(strmanip &&rhs)
+StringExt::StringExt(StringExt &&rhs)
 {
     copy_obj(rhs);
     clear_obj(rhs);
 }
 
-strmanip &strmanip::operator=(const strmanip &obj)
+StringExt &StringExt::operator=(const StringExt &obj)
 {
     if (this == &obj)
         return *this;
@@ -15,7 +15,7 @@ strmanip &strmanip::operator=(const strmanip &obj)
     return *this;
 }
 
-strmanip &strmanip::operator=(strmanip &&rhs) noexcept
+StringExt &StringExt::operator=(StringExt &&rhs) noexcept
 {
     if (this == &rhs)
         return *this;
@@ -27,19 +27,13 @@ strmanip &strmanip::operator=(strmanip &&rhs) noexcept
     return *this;
 }
 
-std::istream &operator>>(std::istream &is, strmanip &obj)
-{
-    is >> obj.m_str;
-    return is;
-}
-
-strmanip &strmanip::operator+=(const char *str)
+StringExt &StringExt::operator+=(const char *str)
 {
     m_str += str;
     return *this;
 }
 
-constexpr void strmanip::replaceEvenDigitsTo_KB() noexcept
+constexpr void StringExt::replaceEvenDigitsTo_KB()
 {
     for (size_t i{0UL}; i < m_str.length(); i++)
     {
