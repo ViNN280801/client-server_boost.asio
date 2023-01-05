@@ -1,5 +1,3 @@
-#pragma once
-
 #include <boost/asio.hpp>
 #include <syncstream>
 #include <iostream>
