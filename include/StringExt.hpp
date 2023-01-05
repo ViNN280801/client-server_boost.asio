@@ -24,7 +24,7 @@ public:
     explicit StringExt() : m_str("") {}
     explicit StringExt(const String auto &str) : m_str(str){};
     explicit StringExt(const StringExt &obj) : std::string(obj) { copy_obj(obj); }
-    explicit StringExt(StringExt &&__rhs);
+    explicit StringExt(StringExt &&rhs);
     virtual ~StringExt() { m_str.clear(); }
 
     constexpr inline std::string getStr() { return m_str; }
@@ -37,7 +37,7 @@ public:
     }
 
     StringExt &operator=(const StringExt &obj);
-    StringExt &operator=(StringExt &&__rhs) noexcept;
+    StringExt &operator=(StringExt &&rhs) noexcept;
     friend std::ostream &operator<<(std::ostream &os, const StringExt &obj)
     {
         os << obj.m_str;
