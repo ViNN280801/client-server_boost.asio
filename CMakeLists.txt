@@ -13,8 +13,8 @@ find_package(Boost 1.78.0 REQUIRED)
 
 include_directories(${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src)
 
-add_executable(server src/Server/server.cpp src/Server/main.cpp src/strmanip.cpp)
-add_executable(client src/Client/client.cpp src/Client/main.cpp src/strmanip.cpp)
+add_executable(server src/Server/server.cpp src/Server/main.cpp src/StringExt.cpp)
+add_executable(client src/Client/client.cpp src/Client/main.cpp src/StringExt.cpp)
 
 set_target_properties(server PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/src/Server")
 set_target_properties(client PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/src/Client")
