@@ -84,5 +84,5 @@ public:
     const std::string receiveMessage() noexcept;
 
     void processingClientMessage();
-    const std::string processingSharedBuffer();
+    void processingSharedBuffer();
 };
