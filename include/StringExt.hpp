@@ -10,7 +10,8 @@ concept String = std::is_convertible_v<T, std::string_view>;
 
 // The only member of the class data is a string, which is usually a number in
 // the string representation. The functionality of the class includes various
-// transformations with a string that contains a number.
+// transformations with a string that contains a number. To use std::string class functions
+// at first, you need to call the "getStr()" method
 class StringExt : std::string
 {
 private:
