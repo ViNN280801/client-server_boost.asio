@@ -1,5 +1,8 @@
 #pragma once
 
+#include <thread>
+#include <mutex>
+
 #include "ServerSettings.hpp"
 
 class ClientErrorHandler
@@ -40,6 +43,9 @@ private:
 
     ClientErrorHandler errorHandler;
 
+    std::string m_clientMsg;
+    std::timed_mutex m_mutex;
+
 public:
     explicit Client()
         : m_ep(boost::asio::ip::address::from_string(DEFAULT_IP_ADDRESS_V4), DEFAULT_PORT_NUMBER),
@@ -77,5 +83,6 @@ public:
 
     const std::string receiveMessage() noexcept;
 
-    const std::string processingClientMessage();
+    void processingClientMessage();
+    const std::string processingSharedBuffer();
 };

@@ -11,11 +11,14 @@ int main()
         client.Connect();
 
         std::string str("");
-        while (str not_eq "quit\n")
+        while (true)
         {
             std::osyncstream(std::cout) << "Sending request to the server...\n";
-            str = client.processingClientMessage();
-            std::osyncstream(std::cout) << "Response received: " << str << '\n';
+
+            std::jthread jth1([&client]()
+                              { client.processingClientMessage(); });
+            std::jthread jth2([&client]()
+                              { client.processingSharedBuffer(); });
         }
 
         client.Close();
