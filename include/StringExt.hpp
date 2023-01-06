@@ -18,8 +18,8 @@ private:
     std::string m_str;
 
 protected:
-    inline void copy_obj(const StringExt &obj) { m_str = obj.m_str; }
-    inline void clear_obj(StringExt &obj) { obj.m_str.clear(); }
+    constexpr inline void copy_obj(const StringExt &obj) { m_str = obj.m_str; }
+    constexpr inline void clear_obj(StringExt &obj) { obj.m_str.clear(); }
 
 public:
     explicit StringExt() : m_str("") {}
@@ -54,6 +54,7 @@ public:
     friend inline bool operator==(const StringExt &lhs, const StringExt &rhs) { return strcmp(lhs.c_str(), rhs.c_str()) ? false : true; }
     friend inline bool operator==(const StringExt &lhs, const char *rhs) { return (strcmp(lhs.c_str(), rhs)) ? false : true; }
 
+    StringExt &operator+=(const char &ch);
     StringExt &operator+=(const char *str);
 
     constexpr inline void removeEndl()
@@ -73,11 +74,10 @@ public:
         return num;
     }
 
-    // Lower than or equals
     constexpr inline bool isLength_lteq_64() const { return m_str.length() <= 64UL ? true : false; }
     constexpr inline bool isDigits() const { return std::ranges::all_of(std::ranges::cbegin(m_str), std::ranges::cend(m_str), isdigit); }
     constexpr inline bool is_32multiple() const { return (toNumber<int>() % 32) ? false : true; }
-    constexpr inline bool is_3moreDigits() const { return (isDigits() and m_str.length() > 2UL) ? true : false; }
+    constexpr inline bool is_2moreDigits() const { return (isDigits() and m_str.length() > 2UL) ? true : false; }
 
     constexpr inline virtual void clear() { m_str.clear(); }
     constexpr inline virtual size_t length() const { return m_str.length(); }
@@ -98,5 +98,5 @@ public:
 
     constexpr inline void sortDescending() { std::ranges::sort(m_str, std::ranges::greater()); }
 
-    constexpr void replaceEvenDigitsTo_KB();
+    void replaceEvenDigitsTo_KB();
 };

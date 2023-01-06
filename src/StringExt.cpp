@@ -27,13 +27,19 @@ StringExt &StringExt::operator=(StringExt &&rhs) noexcept
     return *this;
 }
 
+StringExt &StringExt::operator+=(const char &ch)
+{
+    m_str += ch;
+    return *this;
+}
+
 StringExt &StringExt::operator+=(const char *str)
 {
     m_str += str;
     return *this;
 }
 
-constexpr void StringExt::replaceEvenDigitsTo_KB()
+void StringExt::replaceEvenDigitsTo_KB()
 {
     for (size_t i{0UL}; i < m_str.length(); i++)
     {
