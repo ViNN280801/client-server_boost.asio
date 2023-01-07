@@ -98,10 +98,13 @@ void Client::processingClientMessage()
     msg += '\n';
     m_clientMsg = msg;
 
+    // Idle msg (because server is waiting that both of threads will send msg)
+    sendMessage("\n");
+
     m_mutex.unlock();
 }
 
-const std::string Client::processingSharedBuffer()
+void Client::processingSharedBuffer()
 {
     m_mutex.lock();
 
@@ -113,9 +116,9 @@ const std::string Client::processingSharedBuffer()
 
     std::osyncstream(std::cout) << "Data from shared buffer: " << str;
 
-    m_mutex.unlock();
-
+    std::string sum{std::to_string(str.sumOfDigits<uint>())};
     // Calculating sum of digits and then send it to server side
-    sendMessage<std::string>(std::to_string(str.sumOfDigits<uint>()));
-    return "this->receiveMessage()";
+    sendMessage(sum);
+
+    m_mutex.unlock();
 }

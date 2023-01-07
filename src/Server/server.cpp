@@ -4,11 +4,19 @@ void Service::handleClient(boost::shared_ptr<boost::asio::ip::tcp::socket> sock)
 {
     try
     {
-        boost::asio::streambuf request;
-        boost::asio::read_until(*sock.get(), request, '\n');
-        std::osyncstream(std::cout) << asio_streambuf_to_str(request);
-        std::string response{asio_streambuf_to_str(request)};
-        boost::asio::write(*sock.get(), boost::asio::buffer(response));
+        while (true)
+        {
+            boost::asio::streambuf request;
+            boost::asio::read_until(*sock.get(), request, '\n');
+            std::string str{asio_streambuf_to_str(request)};
+
+            // Skipping the idle message
+            if (str.at(0UL) not_eq '\n')
+                std::osyncstream(std::cout) << str;
+
+            std::string response{asio_streambuf_to_str(request)};
+            boost::asio::write(*sock.get(), boost::asio::buffer(response));
+        }
     }
     catch (const boost::system::system_error &e)
     {

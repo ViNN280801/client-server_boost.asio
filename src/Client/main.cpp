@@ -14,7 +14,6 @@ int main()
         while (true)
         {
             std::osyncstream(std::cout) << "Sending request to the server...\n";
-
             std::jthread jth1([&client]()
                               { client.processingClientMessage(); });
             std::jthread jth2([&client]()

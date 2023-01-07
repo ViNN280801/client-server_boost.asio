@@ -2,13 +2,13 @@
 
 int main()
 {
-    Server srv;
+    Server server;
 
     try
     {
-        srv.start(DEFAULT_PORT_NUMBER);
+        server.start(DEFAULT_PORT_NUMBER);
         std::this_thread::sleep_for(std::chrono::seconds(1));
-        srv.stop();
+        server.stop();
     }
     catch (const boost::system::system_error &e)
     {
