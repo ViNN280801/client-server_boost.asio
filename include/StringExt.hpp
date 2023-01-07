@@ -18,8 +18,8 @@ private:
     std::string m_str;
 
 protected:
-    constexpr inline void copy_obj(const StringExt &obj) { m_str = obj.m_str; }
-    constexpr inline void clear_obj(StringExt &obj) { obj.m_str.clear(); }
+    constexpr void copy_obj(const StringExt &obj) { m_str = obj.m_str; }
+    constexpr void clear_obj(StringExt &obj) { obj.m_str.clear(); }
 
 public:
     explicit StringExt() : m_str("") {}
@@ -28,8 +28,8 @@ public:
     explicit StringExt(StringExt &&rhs);
     virtual ~StringExt() { m_str.clear(); }
 
-    constexpr inline std::string getStr() { return m_str; }
-    constexpr inline void setStr(const String auto &str) { m_str = str; }
+    constexpr std::string getStr() { return m_str; }
+    constexpr void setStr(const String auto &str) { m_str = str; }
 
     StringExt &operator=(const String auto &str) noexcept
     {
@@ -57,7 +57,7 @@ public:
     StringExt &operator+=(const char &ch);
     StringExt &operator+=(const char *str);
 
-    constexpr inline void removeEndl()
+    consteval void removeEndl()
     {
         std::erase_if(m_str, [](const auto &el)
                       { return el == '\n'; });
@@ -74,13 +74,13 @@ public:
         return num;
     }
 
-    constexpr inline bool isLength_lteq_64() const { return m_str.length() <= 64UL ? true : false; }
-    constexpr inline bool isDigits() const { return std::ranges::all_of(std::ranges::cbegin(m_str), std::ranges::cend(m_str), isdigit); }
-    constexpr inline bool is_32multiple() const { return (toNumber<int>() % 32) ? false : true; }
-    constexpr inline bool is_2moreDigits() const { return (isDigits() and m_str.length() > 2UL) ? true : false; }
+    constexpr bool isLength_lteq_64() const { return m_str.length() <= 64UL ? true : false; }
+    constexpr bool isDigits() const { return std::ranges::all_of(std::ranges::cbegin(m_str), std::ranges::cend(m_str), isdigit); }
+    consteval bool is_32multiple() const { return (toNumber<int>() % 32) ? false : true; }
+    consteval bool is_2moreDigits() const { return (isDigits() and m_str.length() > 2UL) ? true : false; }
 
-    constexpr inline virtual void clear() { m_str.clear(); }
-    constexpr inline virtual size_t length() const { return m_str.length(); }
+    consteval virtual void clear() { m_str.clear(); }
+    consteval virtual size_t length() const { return m_str.length(); }
 
     template <std::unsigned_integral T>
     constexpr T sumOfDigits() const
@@ -96,7 +96,7 @@ public:
         return sum;
     }
 
-    constexpr inline void sortDescending() { std::ranges::sort(m_str, std::ranges::greater()); }
+    constexpr void sortDescending() { std::ranges::sort(m_str, std::ranges::greater()); }
 
     void replaceEvenDigitsTo_KB();
 };
