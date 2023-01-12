@@ -18,8 +18,8 @@ void Service::handleClient(boost::shared_ptr<boost::asio::ip::tcp::socket> sock)
 
                 // Deleting endline symbol -> '\n' and symbol that specifies
                 // that string is ending -> '\0' - nil terminator
-                strExt.removeChars();
-                strExt.removeChars('\0');
+                strExt.removeChar();
+                strExt.removeChar('\0');
 
                 std::osyncstream(std::cout) << "Response to previous clients message: ";
                 (strExt.is_2moreDigits() and strExt.is_32multiple())
