@@ -10,13 +10,6 @@ class Service
 {
 public:
     explicit Service() {}
-
-    inline const std::string asio_streambuf_to_str(const boost::asio::streambuf &buf) const noexcept
-    {
-        return std::string(boost::asio::buffers_begin(buf.data()),
-                           boost::asio::buffers_begin(buf.data()) + buf.size());
-    }
-
     void handleClient(boost::shared_ptr<boost::asio::ip::tcp::socket> sock);
 
     inline void startHandlingClient(boost::shared_ptr<boost::asio::ip::tcp::socket> sock)
