@@ -10,7 +10,7 @@ class Service
 {
 public:
     explicit Service() {}
-    void handleClient(boost::shared_ptr<boost::asio::ip::tcp::socket> sock);
+    void handleClient(boost::shared_ptr<boost::asio::ip::tcp::socket>);
 
     inline void startHandlingClient(boost::shared_ptr<boost::asio::ip::tcp::socket> sock)
     {

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <thread>
 #include <mutex>
 
@@ -10,10 +11,10 @@ class ClientErrorHandler
 public:
     explicit ClientErrorHandler() {}
 
-    int errHandle(const boost::system::system_error &e) const;
+    int errHandle(const boost::system::system_error &) const;
 
-    int handleSocketCreation(boost::asio::ip::tcp::socket &sock, boost::asio::ip::tcp::endpoint &ep);
-    int handleSocketConnection(boost::asio::ip::tcp::socket &sock, boost::asio::ip::tcp::endpoint &ep);
+    int handleSocketCreation(std::shared_ptr<boost::asio::ip::tcp::socket>, boost::asio::ip::tcp::endpoint &);
+    int handleSocketConnection(std::shared_ptr<boost::asio::ip::tcp::socket>, boost::asio::ip::tcp::endpoint &);
 
     int handleWritingMessage(boost::asio::ip::tcp::socket &sock, const String auto &msg)
     {
@@ -29,7 +30,7 @@ public:
         return 0;
     }
 
-    int handleSocketClosure(boost::asio::ip::tcp::socket &sock);
+    int handleSocketClosure(std::shared_ptr<boost::asio::ip::tcp::socket>);
 
     virtual ~ClientErrorHandler() {}
 };
@@ -39,7 +40,7 @@ class Client
 private:
     boost::asio::io_service m_ios;
     boost::asio::ip::tcp::endpoint m_ep;
-    boost::asio::ip::tcp::socket m_sock;
+    std::shared_ptr<boost::asio::ip::tcp::socket> m_sock;
 
     ClientErrorHandler errorHandler;
 
@@ -49,15 +50,15 @@ private:
 public:
     explicit Client()
         : m_ep(boost::asio::ip::address::from_string(DEFAULT_IP_ADDRESS_V4), DEFAULT_PORT_NUMBER),
-          m_sock(m_ios)
+          m_sock(new boost::asio::ip::tcp::socket(m_ios))
     {
         if (errorHandler.handleSocketCreation(m_sock, m_ep))
             exit(EXIT_FAILURE);
     }
 
-    template <std::unsigned_integral T>
+    template <std::unsigned_integral T = uint>
     explicit Client(const String auto &rawIP, const T &port)
-        : m_ep(boost::asio::ip::address::from_string(rawIP), port), m_sock(m_ios)
+        : m_ep(boost::asio::ip::address::from_string(rawIP), port), m_sock(new boost::asio::ip::tcp::socket(m_ios))
     {
         if (errorHandler.handleSocketCreation(m_sock, m_ep))
             exit(EXIT_FAILURE);
@@ -77,7 +78,7 @@ public:
 
     inline void sendMessage(const String auto &msg)
     {
-        if (errorHandler.handleWritingMessage(m_sock, msg))
+        if (errorHandler.handleWritingMessage(*m_sock.get(), msg))
             exit(EXIT_FAILURE);
     }
 

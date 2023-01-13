@@ -6,11 +6,12 @@ int ClientErrorHandler::errHandle(const boost::system::system_error &e) const
     return e.code().value();
 }
 
-int ClientErrorHandler::handleSocketCreation(boost::asio::ip::tcp::socket &sock, boost::asio::ip::tcp::endpoint &ep)
+int ClientErrorHandler::handleSocketCreation(std::shared_ptr<boost::asio::ip::tcp::socket> sock,
+                                             boost::asio::ip::tcp::endpoint &ep)
 {
     try
     {
-        sock.open(ep.protocol());
+        sock->open(ep.protocol());
     }
     catch (const boost::system::system_error &e)
     {
@@ -20,11 +21,12 @@ int ClientErrorHandler::handleSocketCreation(boost::asio::ip::tcp::socket &sock,
     return 0;
 }
 
-int ClientErrorHandler::handleSocketConnection(boost::asio::ip::tcp::socket &sock, boost::asio::ip::tcp::endpoint &ep)
+int ClientErrorHandler::handleSocketConnection(std::shared_ptr<boost::asio::ip::tcp::socket> sock,
+                                               boost::asio::ip::tcp::endpoint &ep)
 {
     try
     {
-        sock.connect(ep);
+        sock->connect(ep);
     }
     catch (const boost::system::system_error &e)
     {
@@ -34,12 +36,13 @@ int ClientErrorHandler::handleSocketConnection(boost::asio::ip::tcp::socket &soc
     return 0;
 }
 
-int ClientErrorHandler::handleSocketClosure(boost::asio::ip::tcp::socket &sock)
+int ClientErrorHandler::handleSocketClosure(std::shared_ptr<boost::asio::ip::tcp::socket> sock)
 {
     try
     {
-        sock.shutdown(boost::asio::ip::tcp::socket::shutdown_both);
-        sock.close();
+        sock->shutdown(boost::asio::ip::tcp::socket::shutdown_both);
+        sock->close();
+        sock.reset();
     }
     catch (const boost::system::system_error &e)
     {
@@ -54,7 +57,7 @@ const std::string Client::receiveMessage() noexcept
     m_mutex.lock();
 
     boost::asio::streambuf buf;
-    boost::asio::read_until(m_sock, buf, "\n");
+    boost::asio::read_until(*m_sock.get(), buf, "\n");
 
     m_mutex.unlock();
 
