@@ -6,9 +6,9 @@ class Server
 {
 private:
     io_service m_ios;
-    std::unique_ptr<std::jthread> m_jth;
-    std::atomic_flag m_stop;
-    std::atomic_flag m_isClientConnected;
+    std::unique_ptr<jthread> m_jth;
+    atomic_flag m_stop;
+    atomic_flag m_isClientConnected;
 
 protected:
     int handleWritingToSocket(shPtrSocketBA sock, const String auto &msg)
@@ -29,9 +29,7 @@ protected:
     template <std::unsigned_integral T = uint>
     void handleClient(const T &port) noexcept
     {
-        boost::asio::ip::tcp::acceptor acc(m_ios, boost::asio::ip::tcp::endpoint(
-                                                      boost::asio::ip::address_v4::any(),
-                                                      port));
+        acceptor acc(m_ios, endpoint(boost::asio::ip::address_v4::any(), port));
         acc.listen();
 
         while (not m_stop.test())

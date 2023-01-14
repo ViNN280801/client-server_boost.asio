@@ -10,7 +10,7 @@ int main()
         std::this_thread::sleep_for(std::chrono::seconds(1));
         server.stop();
     }
-    catch (const boost::system::system_error &e)
+    catch (ksys_err &e)
     {
         std::cerr << "Error occured! Error code = " << e.code() << ". Message: " << e.what() << std::endl;
         return e.code().value();

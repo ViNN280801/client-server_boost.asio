@@ -12,3 +12,7 @@ using shPtrSocketBA = std::shared_ptr<socketBA>;
 
 using endpoint = boost::asio::ip::tcp::endpoint;
 using io_service = boost::asio::io_service;
+using acceptor = boost::asio::ip::tcp::acceptor;
+
+using atomic_flag = std::atomic_flag;
+using jthread = std::jthread;
