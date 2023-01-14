@@ -5,6 +5,9 @@
 
 class ClientErrorHandler
 {
+private:
+    std::atomic_flag m_isServerReachable;
+
 public:
     explicit ClientErrorHandler() {}
 

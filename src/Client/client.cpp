@@ -24,14 +24,30 @@ int ClientErrorHandler::handleSocketCreation(shPtrSocketBA sock,
 int ClientErrorHandler::handleSocketConnection(shPtrSocketBA sock,
                                                endpoint &ep)
 {
-    try
+    while (true)
     {
-        sock->connect(ep);
-    }
-    catch (ksys_err &e)
-    {
-        std::cerr << "Error connecting to socket. Client::handleSocketConnection()" << std::endl;
-        return errHandle(e);
+        m_isServerReachable.test_and_set();
+        while (m_isServerReachable.test())
+        {
+            // back:
+            err_code err;
+            sock->connect(ep, err);
+
+            if (err)
+            {
+                std::cout << "Server is unreacheble now. Trying to reconnect...\n";
+                std::this_thread::sleep_for(std::chrono::seconds(3));
+                m_isServerReachable.clear();
+                break;
+            }
+            else
+            {
+                m_isServerReachable.test_and_set();
+                break;
+            }
+        }
+        if (m_isServerReachable.test())
+            break;
     }
     return 0;
 }
