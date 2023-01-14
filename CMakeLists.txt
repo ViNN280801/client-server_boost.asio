@@ -6,13 +6,25 @@ project(clientserver
 
 find_package(Boost 1.78 REQUIRED)
 
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_FLAGS "-lboost_system -lpthread -Wall -Wpedantic -Wextra")
+set(CMAKE_CXX_COMPILER, "gcc")
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include_directories(${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src)
 
-add_executable(server src/Server/main.cpp src/StringExt.cpp)
-add_executable(client src/Client/client.cpp src/Client/main.cpp src/StringExt.cpp)
+if (UNIX)
+    add_executable(server src/Server/main.cpp src/StringExt.cpp)
+    add_executable(client src/Client/client.cpp src/Client/main.cpp src/StringExt.cpp)
+    set(CMAKE_CXX_FLAGS "-lboost_system -lpthread -Wall -Wpedantic -Wextra")
 
-set_target_properties(server PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/src/Server")
-set_target_properties(client PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/src/Client")
+    set_target_properties(server PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/src/Server")
+    set_target_properties(client PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/src/Client")
+endif (UNIX)
+
+if (WIN32)
+    add_executable(server.exe src/Server/main.cpp src/StringExt.cpp)
+    add_executable(client.exe src/Client/client.cpp src/Client/main.cpp src/StringExt.cpp)
+
+    set_target_properties(server PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/src/Server")
+    set_target_properties(client PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/src/Client")
+endif (WIN32)
