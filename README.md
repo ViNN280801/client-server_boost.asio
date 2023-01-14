@@ -26,6 +26,8 @@ Waits for data from the [client side](https://github.com/ViNN280801/client-serve
 
 ## How to compile
 
+### Linux
+
 For compile this program, you need to execute following commands in the terminal:
 
 ```console
@@ -33,10 +35,56 @@ cmake .
 cmake --build .
 ```
 
+Output in more detail:
+
+```console
+<loveit@fedora cliserv>$ cmake .
+-- The CXX compiler identification is GNU 12.2.1
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found Boost: /usr/lib64/cmake/Boost-1.78.0/BoostConfig.cmake (found suitable version "1.78.0", minimum required is "1.78")
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/vladislavsemykin/Documents/MyDocuments/infotecs/cliserv
+<loveit@fedora cliserv>$ cmake --build .
+[ 14%] Building CXX object CMakeFiles/server.dir/src/Server/main.cpp.o
+[ 28%] Building CXX object CMakeFiles/server.dir/src/StringExt.cpp.o
+[ 42%] Linking CXX executable src/Server/server
+[ 42%] Built target server
+[ 57%] Building CXX object CMakeFiles/client.dir/src/Client/client.cpp.o
+[ 71%] Building CXX object CMakeFiles/client.dir/src/Client/main.cpp.o
+[ 85%] Building CXX object CMakeFiles/client.dir/src/StringExt.cpp.o
+[100%] Linking CXX executable src/Client/client
+[100%] Built target client
+<loveit@fedora cliserv>$
+```
+
 Then, you will get smth same:
 ![](img/1.png)
 
 As you can see, program compiled without any warning. See [CMakeLists](https://github.com/ViNN280801/client-server_boost.asio#cmakelists) explanation.
+
+### Windows
+
+To compile this CMake project on Windows OS, you need to choose your 'builder', to view which are make file builders you have, you need to write in the command prompt (cmd) following command and choose necessary from list:
+
+```console
+cmake --help
+```
+
+List of available tools for build makefiles:
+
+![](img/10.jpg)
+
+Next commands will build project:
+
+```console
+cmake -G "MinGW Makefiles" ..
+mingw32-make
+```
 
 ## CMakeLists
 
@@ -97,7 +145,7 @@ This declaration of concept means that all template type 'T' has to be convertib
 In turn, the notation means that 'T' type is guaranteed to be an unsigned integral type (snippet from server.hpp):
 
 ```cpp
-template <std::unsigned_integral T = uint>
+template <std::unsigned_integral T = unsigned int>
 constexpr void start(const T &port)
 ```
 
