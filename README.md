@@ -37,9 +37,8 @@ cmake --build .
 
 Output in more detail:
 
-````console
-<loveit@fedora cliserv>$ cmake .
 ```
+<loveit@fedora cliserv>$ cmake .
 -- The CXX compiler identification is GNU 12.2.1
 -- Detecting CXX compiler ABI info
 -- Detecting CXX compiler ABI info - done
@@ -60,9 +59,8 @@ Output in more detail:
 [ 85%] Building CXX object CMakeFiles/client.dir/src/StringExt.cpp.o
 [100%] Linking CXX executable src/Client/client
 [100%] Built target client
-```
 <loveit@fedora cliserv>$
-````
+```
 
 Then, you will get smth same:
 ![](img/1.png)
