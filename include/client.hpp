@@ -11,7 +11,7 @@ private:
 public:
     explicit ClientErrorHandler() {}
 
-    int errHandle(const sys_err &) const;
+    int errHandle(ksys_err &) const;
 
     int handleSocketCreation(shPtrSocketBA, endpoint &);
     int handleSocketConnection(shPtrSocketBA, endpoint &);
