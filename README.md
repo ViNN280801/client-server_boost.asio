@@ -81,3 +81,49 @@ If in the client side occurs any error and it closes, server will wait reconnect
 ![](img/7.png)
 
 ![](img/8.png)
+
+## C++20 features view
+
+### Concepts
+
+In the file StringExt.hpp (means string extended) you can see next declaration:
+
+```cpp
+template <typename T>
+concept String = std::is_convertible_v<T, std::string_view>;
+```
+
+This declaration of concept means that all template type 'T' has to be convertible to value 'std::string_view', it means that all template type 'T' has to be convertible to any character sequence.
+In turn, the notation means that 'T' type is guaranteed to be an unsigned integral type (snippet from server.hpp):
+
+```cpp
+template <std::unsigned_integral T = uint>
+constexpr void start(const T &port)
+```
+
+### Automatically joinable threads
+
+Snippet from src/Client/main.cpp:
+
+```cpp
+while (true)
+{
+    std::osyncstream(std::cout) << "Sending request to the server...\n";
+    jthread jth1([&client]()
+        { client.processingClientMessage(); });
+    jthread jth2([&client]()
+        { client.processingSharedBuffer(); });
+}
+```
+
+This type of threads (std::jthread) automatically determine when they need to call funcs 'detach()' or 'join()'
+
+### Ranges
+
+Ranges library is very usefull and simple. How you can see, class of extended string - 'StringExt' uses the ranges library. Example snippet from StringExt.hpp:
+
+```cpp
+constexpr void sortDescending() { std::ranges::sort(m_str, std::ranges::greater()); }
+```
+
+For more details, see the [C++ 20 Ranges Library Reference](https://en.cppreference.com/w/cpp/ranges)
