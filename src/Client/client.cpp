@@ -29,13 +29,12 @@ int ClientErrorHandler::handleSocketConnection(shPtrSocketBA sock,
         m_isServerReachable.test_and_set();
         while (m_isServerReachable.test())
         {
-            // back:
             err_code err;
             sock->connect(ep, err);
 
             if (err)
             {
-                std::cout << "Server is unreacheble now. Trying to reconnect...\n";
+                std::osyncstream(std::cout) << "Server is unreacheble now. Trying to reconnect...\n";
                 std::this_thread::sleep_for(std::chrono::seconds(3));
                 m_isServerReachable.clear();
                 break;
