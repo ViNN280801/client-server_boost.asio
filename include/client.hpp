@@ -45,7 +45,7 @@ public:
             exit(EXIT_FAILURE);
     }
 
-    template <std::unsigned_integral T = uint>
+    template <std::unsigned_integral T = unsigned int>
     explicit Client(const String auto &rawIP, const T &port)
         : m_ep(boost::asio::ip::address::from_string(rawIP), port), m_sock(new socketBA(m_ios))
     {

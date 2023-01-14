@@ -26,7 +26,7 @@ protected:
         return 0;
     }
 
-    template <std::unsigned_integral T = uint>
+    template <std::unsigned_integral T = unsigned int>
     void handleClient(const T &port) noexcept
     {
         acceptor acc(m_ios, endpoint(boost::asio::ip::address_v4::any(), port));
@@ -84,7 +84,7 @@ protected:
 public:
     explicit Server() : m_stop(false) {}
 
-    template <std::unsigned_integral T = uint>
+    template <std::unsigned_integral T = unsigned int>
     constexpr void start(const T &port)
     {
         m_jth.reset(new std::jthread([this, port]()

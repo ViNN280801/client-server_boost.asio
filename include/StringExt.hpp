@@ -68,7 +68,7 @@ public:
                       { return ch == charToRemove; });
     }
 
-    template <std::unsigned_integral T = uint>
+    template <std::unsigned_integral T = unsigned int>
     constexpr T toNumber() const
     {
         std::istringstream iss(m_str);
@@ -88,7 +88,7 @@ public:
     constexpr virtual void clear() { m_str.clear(); }
     constexpr virtual size_t length() const { return m_str.length(); }
 
-    template <std::unsigned_integral T = uint>
+    template <std::unsigned_integral T = unsigned int>
     constexpr T sumOfDigits() const
     {
         T sum{0U};

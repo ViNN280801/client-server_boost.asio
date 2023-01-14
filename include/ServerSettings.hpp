@@ -8,4 +8,4 @@
 #include "project_types.hpp"
 
 static const std::string DEFAULT_IP_ADDRESS_V4{"127.0.0.1"};
-static constexpr uint DEFAULT_PORT_NUMBER{8888U};
+static constexpr unsigned int DEFAULT_PORT_NUMBER{8888U};
