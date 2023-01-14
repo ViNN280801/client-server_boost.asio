@@ -1,19 +1,19 @@
 #include "../../include/client.hpp"
 
-int ClientErrorHandler::errHandle(const boost::system::system_error &e) const
+int ClientErrorHandler::errHandle(ksys_err &e) const
 {
     std::cerr << "Error occured! Error code = " << e.code() << ". Message: " << e.what() << std::endl;
     return e.code().value();
 }
 
-int ClientErrorHandler::handleSocketCreation(std::shared_ptr<boost::asio::ip::tcp::socket> sock,
-                                             boost::asio::ip::tcp::endpoint &ep)
+int ClientErrorHandler::handleSocketCreation(shPtrSocketBA sock,
+                                             endpoint &ep)
 {
     try
     {
         sock->open(ep.protocol());
     }
-    catch (const boost::system::system_error &e)
+    catch (ksys_err &e)
     {
         std::cerr << "Error creation socket. Client::handleSocketCreation()" << std::endl;
         return errHandle(e);
@@ -21,14 +21,14 @@ int ClientErrorHandler::handleSocketCreation(std::shared_ptr<boost::asio::ip::tc
     return 0;
 }
 
-int ClientErrorHandler::handleSocketConnection(std::shared_ptr<boost::asio::ip::tcp::socket> sock,
-                                               boost::asio::ip::tcp::endpoint &ep)
+int ClientErrorHandler::handleSocketConnection(shPtrSocketBA sock,
+                                               endpoint &ep)
 {
     try
     {
         sock->connect(ep);
     }
-    catch (const boost::system::system_error &e)
+    catch (ksys_err &e)
     {
         std::cerr << "Error connecting to socket. Client::handleSocketConnection()" << std::endl;
         return errHandle(e);
@@ -36,7 +36,7 @@ int ClientErrorHandler::handleSocketConnection(std::shared_ptr<boost::asio::ip::
     return 0;
 }
 
-int ClientErrorHandler::handleSocketClosure(std::shared_ptr<boost::asio::ip::tcp::socket> sock)
+int ClientErrorHandler::handleSocketClosure(shPtrSocketBA sock)
 {
     try
     {
@@ -44,7 +44,7 @@ int ClientErrorHandler::handleSocketClosure(std::shared_ptr<boost::asio::ip::tcp
         sock->close();
         sock.reset();
     }
-    catch (const boost::system::system_error &e)
+    catch (ksys_err &e)
     {
         std::cerr << "Error socket closure. Client::handleSocketClosure()" << std::endl;
         return errHandle(e);
@@ -119,7 +119,7 @@ void Client::processingSharedBuffer()
 
     std::osyncstream(std::cout) << "Data from shared buffer: " << str;
 
-    std::string sum{std::to_string(str.sumOfDigits<uint>())};
+    std::string sum{std::to_string(str.sumOfDigits())};
     // Calculating sum of digits and then send it to server side
     sendMessage(sum);
 

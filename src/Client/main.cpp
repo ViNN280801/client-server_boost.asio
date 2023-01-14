@@ -28,7 +28,7 @@ int main()
     }
     catch (const boost::system::system_error &e)
     {
-        std::cout << "Error occured! Error code = " << e.code() << ". Message: " << e.what() << std::endl;
+        std::cerr << "Error occured! Error code = " << e.code() << ". Message: " << e.what() << std::endl;
         return e.code().value();
     }
 

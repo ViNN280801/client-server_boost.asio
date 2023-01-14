@@ -6,7 +6,7 @@
 class Server
 {
 private:
-    boost::asio::io_service m_ios;
+    io_service m_ios;
     std::unique_ptr<std::jthread> m_jth;
     std::atomic_flag m_stop;
     std::atomic_flag m_isClientConnected;
@@ -25,12 +25,12 @@ protected:
             while (true)
             {
                 m_isClientConnected.test_and_set();
-                boost::shared_ptr<boost::asio::ip::tcp::socket> sock(new boost::asio::ip::tcp::socket(m_ios));
+                shPtrSocketBA sock(new socketBA(m_ios));
                 acc.accept(*sock.get());
                 while (m_isClientConnected.test())
                 {
                     boost::asio::streambuf request;
-                    boost::system::error_code err;
+                    err_code err;
                     boost::asio::read_until(*sock.get(), request, '\n', err);
 
                     if (err)

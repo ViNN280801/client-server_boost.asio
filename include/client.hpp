@@ -8,18 +8,18 @@ class ClientErrorHandler
 public:
     explicit ClientErrorHandler() {}
 
-    int errHandle(const boost::system::system_error &) const;
+    int errHandle(const sys_err &) const;
 
-    int handleSocketCreation(std::shared_ptr<boost::asio::ip::tcp::socket>, boost::asio::ip::tcp::endpoint &);
-    int handleSocketConnection(std::shared_ptr<boost::asio::ip::tcp::socket>, boost::asio::ip::tcp::endpoint &);
+    int handleSocketCreation(shPtrSocketBA, endpoint &);
+    int handleSocketConnection(shPtrSocketBA, endpoint &);
 
-    int handleWritingMessage(boost::asio::ip::tcp::socket &sock, const String auto &msg)
+    int handleWritingMessage(socketBA &sock, const String auto &msg)
     {
         try
         {
             boost::asio::write(sock, boost::asio::buffer(msg));
         }
-        catch (const boost::system::system_error &e)
+        catch (const sys_err &e)
         {
             std::cerr << "Error writing message to socket. Client::handleWritingMessage()" << std::endl;
             return errHandle(e);
@@ -27,7 +27,7 @@ public:
         return 0;
     }
 
-    int handleSocketClosure(std::shared_ptr<boost::asio::ip::tcp::socket>);
+    int handleSocketClosure(shPtrSocketBA);
 
     virtual ~ClientErrorHandler() {}
 };
@@ -35,9 +35,9 @@ public:
 class Client
 {
 private:
-    boost::asio::io_service m_ios;
-    boost::asio::ip::tcp::endpoint m_ep;
-    std::shared_ptr<boost::asio::ip::tcp::socket> m_sock;
+    io_service m_ios;
+    endpoint m_ep;
+    shPtrSocketBA m_sock;
 
     ClientErrorHandler errorHandler;
 
@@ -47,7 +47,7 @@ private:
 public:
     explicit Client()
         : m_ep(boost::asio::ip::address::from_string(DEFAULT_IP_ADDRESS_V4), DEFAULT_PORT_NUMBER),
-          m_sock(new boost::asio::ip::tcp::socket(m_ios))
+          m_sock(new socketBA(m_ios))
     {
         if (errorHandler.handleSocketCreation(m_sock, m_ep))
             exit(EXIT_FAILURE);
@@ -55,7 +55,7 @@ public:
 
     template <std::unsigned_integral T = uint>
     explicit Client(const String auto &rawIP, const T &port)
-        : m_ep(boost::asio::ip::address::from_string(rawIP), port), m_sock(new boost::asio::ip::tcp::socket(m_ios))
+        : m_ep(boost::asio::ip::address::from_string(rawIP), port), m_sock(new socketBA(m_ios))
     {
         if (errorHandler.handleSocketCreation(m_sock, m_ep))
             exit(EXIT_FAILURE);
