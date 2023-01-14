@@ -2,6 +2,7 @@
 #include <iostream>
 #include <thread>
 #include <memory>
+#include <atomic>
 
 #include "StringExt.hpp"
 #include "project_types.hpp"
