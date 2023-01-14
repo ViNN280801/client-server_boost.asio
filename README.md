@@ -2,7 +2,7 @@
 
 ## Description
 
-Program is written in C++. It consists of two programs, the interaction of programs implemented through the use of Boost Asio Library sockets. Thread interaction is synchronized, [thread #2]() does not poll the shared buffer constantly. The synchronization mechanism is not a global variable. The operation of [program #1]() is as independent as possible from the launch status of [program #2](). This means that the sudden shutdown of program #2 does not lead to immediate input problems for the user. When restarting program #2, reconnection is performed. The operation of program #2 is as independent as possible from the launch status of program #2. The sudden shutdown of program #1 does not lead to immediate display problems. Waiting for the connection of program #2 is performed when the connection between the programs is lost.
+Program is written in C++, and could compiled with CMake. It consists of two programs, the interaction of programs implemented through the use of Boost Asio Library sockets. Thread interaction is synchronized, [thread #2](https://github.com/ViNN280801/client-server_boost.asio#1st-thread) does not poll the shared buffer constantly. The synchronization mechanism is not a global variable. The operation of [program #1](https://github.com/ViNN280801/client-server_boost.asio#client-side) is as independent as possible from the launch status of [program #2](https://github.com/ViNN280801/client-server_boost.asio#server-side). This means that the sudden shutdown of program #2 does not lead to immediate input problems for the user. When restarting program #2, reconnection is performed. The operation of program #2 is as independent as possible from the launch status of program #2. The sudden shutdown of program #1 does not lead to immediate display problems. Waiting for the connection of program #2 is performed when the connection between the programs is lost.
 
 ### Client side
 
@@ -12,11 +12,11 @@ Accepts the string that the user enters. Implemented a check that the string con
 
 #### 2nd thread
 
-Processes data that is placed in a shared buffer. After receiving the data, the shared buffer is overwritten. The stream displays the received data on the screen, the total sum of all elements, which are numerical values, is calculated. The amount received is transferred to the [server side](). After that, the thread waits for the following data.
+Processes data that is placed in a shared buffer. After receiving the data, the shared buffer is overwritten. The stream displays the received data on the screen, the total sum of all elements, which are numerical values, is calculated. The amount received is transferred to the [server side](https://github.com/ViNN280801/client-server_boost.asio#server-side). After that, the thread waits for the following data.
 
 ### Server side
 
-Waits for data from the [client side](). When data is received, an analysis is performed of how many characters the transmitted value consists of. If it is more than 2 characters and if it is a multiple of 32, it displays a message about the received data, otherwise an error message is displayed. Then the program continues to wait for data.
+Waits for data from the [client side](https://github.com/ViNN280801/client-server_boost.asio#server-side). When data is received, an analysis is performed of how many characters the transmitted value consists of. If it is more than 2 characters and if it is a multiple of 32, it displays a message about the received data, otherwise an error message is displayed. Then the program continues to wait for data.
 
 ## Dependencies
 
@@ -35,3 +35,5 @@ cmake --build .
 
 Then, you will get smth same:
 ![](img/1.png)
+
+As you can see, program compiled without any warning. See [CMakeLists]() explanation.
