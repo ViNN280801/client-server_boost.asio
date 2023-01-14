@@ -1,6 +1,8 @@
 #include <boost/asio.hpp>
 #include <syncstream>
 #include <iostream>
+#include <thread>
+#include <memory>
 
 #include "StringExt.hpp"
 

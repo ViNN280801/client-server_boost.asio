@@ -1,9 +1,6 @@
 #pragma once
 
-#include <memory>
-#include <thread>
 #include <mutex>
-
 #include "ServerSettings.hpp"
 
 class ClientErrorHandler
