@@ -37,3 +37,23 @@ Then, you will get smth same:
 ![](img/1.png)
 
 As you can see, program compiled without any warning. See [CMakeLists]() explanation.
+
+## CMakeLists
+
+How it was said earlier, CMake version 3.25 required, 1 line of CMakeLists.txt is warns about it.
+
+```cmake
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_FLAGS "-lboost_system -lpthread -Wall -Wpedantic -Wextra")
+```
+
+Lines above is says that CMake will use C++ 23 standard and that program will compiled with supporing of boost library, threading library (See [difference](https://stackoverflow.com/questions/23250863/difference-between-pthread-and-lpthread-while-compiling) between -lpthread and -pthread), and absolutely all warnings (-Wall -Wpedantic -Wextra)
+
+Following lines creates executable client and server apps in different directories:
+
+```cmake
+set_target_properties(server PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/src/Server")
+set_target_properties(client PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/src/Client")
+```
+
+
