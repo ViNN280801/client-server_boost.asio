@@ -6,7 +6,7 @@
 class ClientErrorHandler
 {
 private:
-    std::atomic_flag m_isServerReachable;
+    atomic_flag m_isServerReachable;
 
 public:
     explicit ClientErrorHandler() {}
@@ -15,21 +15,6 @@ public:
 
     int handleSocketCreation(shPtrSocketBA, endpoint &);
     int handleSocketConnection(shPtrSocketBA, endpoint &);
-
-    int handleWritingMessage(socketBA &sock, const String auto &msg)
-    {
-        try
-        {
-            boost::asio::write(sock, boost::asio::buffer(msg));
-        }
-        catch (const sys_err &e)
-        {
-            std::cerr << "Error writing message to socket. Client::handleWritingMessage()" << std::endl;
-            return errHandle(e);
-        }
-        return 0;
-    }
-
     int handleSocketClosure(shPtrSocketBA);
 
     virtual ~ClientErrorHandler() {}
@@ -46,6 +31,10 @@ private:
 
     std::string m_clientMsg;
     std::timed_mutex m_mutex;
+    atomic_flag m_isServerReachable;
+
+protected:
+    void reconnect(shPtrSocketBA, io_service &, endpoint &);
 
 public:
     explicit Client()
@@ -76,10 +65,37 @@ public:
             exit(EXIT_FAILURE);
     }
 
-    inline void sendMessage(const String auto &msg)
+    void sendMessage(const String auto &msg)
     {
-        if (errorHandler.handleWritingMessage(*m_sock.get(), msg))
-            exit(EXIT_FAILURE);
+        while (true)
+        {
+            m_isServerReachable.test_and_set();
+            while (m_isServerReachable.test())
+            {
+                err_code err;
+                boost::asio::write(*m_sock.get(), boost::asio::buffer(msg), err);
+
+                if (err)
+                {
+                    std::osyncstream(std::cout) << "Something went wrong. Trying to reconnect...\n";
+                    std::this_thread::sleep_for(std::chrono::seconds(3));
+                    m_isServerReachable.clear();
+                    break;
+                }
+                else
+                {
+                    m_isServerReachable.test_and_set();
+                    break;
+                }
+            }
+            if (m_isServerReachable.test())
+                break;
+
+            // Following code designed for recconnection
+            m_sock.reset(new socketBA(m_ios));
+            errorHandler.handleSocketCreation(m_sock, m_ep);
+            errorHandler.handleSocketConnection(m_sock, m_ep);
+        }
     }
 
     const std::string receiveMessage() noexcept;
