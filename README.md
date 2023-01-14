@@ -127,3 +127,11 @@ constexpr void sortDescending() { std::ranges::sort(m_str, std::ranges::greater(
 ```
 
 For more details, see the [C++ 20 Ranges Library Reference](https://en.cppreference.com/w/cpp/ranges)
+
+## Disadvantages
+
+How you can saw from the [examples](https://github.com/ViNN280801/client-server_boost.asio#usage-example), this application has 2 disadvantages. 1st disadvantage - is desynchronization between the output streams:
+
+![](img/9.png)
+
+And the 2nd disadvantage - since the client works in two threads in synchronous mode, we only see the server's response to the previous client message, and not to the current one, thus we will not be able to see the server's response to the last message.
