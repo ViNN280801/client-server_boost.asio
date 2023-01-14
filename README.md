@@ -86,6 +86,8 @@ cmake -G "MinGW Makefiles" ..
 mingw32-make
 ```
 
+Note: In this command, I use 2 dots (..) to specify the previous folder. Because, I created in the project folder the folder with name 'build', and then executed commands above from this folder.
+
 ## CMakeLists
 
 How it was said earlier, CMake version 3.25 required, 1 line of CMakeLists.txt is warns about it.
