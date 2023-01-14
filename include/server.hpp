@@ -1,6 +1,5 @@
 #pragma once
 
-#include <atomic>
 #include "ServerSettings.hpp"
 
 class Server
@@ -36,8 +35,7 @@ protected:
                     if (err)
                     {
                         std::cout << "Client disconnected or any error occurred on a client side. "
-                                  << "Waiting for the next connection establishment..."
-                                  << std::endl;
+                                  << "Waiting for the next connection establishment...\n";
                         m_isClientConnected.clear();
                         break;
                     }
