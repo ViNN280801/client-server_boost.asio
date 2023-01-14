@@ -36,7 +36,7 @@ cmake --build .
 Then, you will get smth same:
 ![](img/1.png)
 
-As you can see, program compiled without any warning. See [CMakeLists]() explanation.
+As you can see, program compiled without any warning. See [CMakeLists](https://github.com/ViNN280801/client-server_boost.asio#cmakelists) explanation.
 
 ## CMakeLists
 
@@ -56,4 +56,28 @@ set_target_properties(server PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE
 set_target_properties(client PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/src/Client")
 ```
 
+## Usage example
 
+If you launch only client without launching the server, you will get the next message:
+
+![](img/2.png)
+
+Then, when you launch server, all would be ok, socket will connects:
+
+![](img/3.png)
+
+Examples of entering digital messages:
+
+![](img/4.png)
+
+![](img/5.png)
+
+If you try to enter some message with any symbol instead of only digits, you will get the next warn message:
+
+![](img/6.png)
+
+If in the client side occurs any error and it closes, server will wait reconnecting of client socket:
+
+![](img/7.png)
+
+![](img/8.png)
