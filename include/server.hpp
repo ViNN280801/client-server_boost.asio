@@ -11,6 +11,21 @@ private:
     std::atomic_flag m_isClientConnected;
 
 protected:
+    int handleWritingToSocket(shPtrSocketBA sock, const String auto &msg)
+    {
+        try
+        {
+            boost::asio::write(*sock.get(), boost::asio::buffer(msg));
+        }
+        catch (ksys_err &e)
+        {
+            std::cerr << "Error writing to the socket. Server::handleWritingToSocket()" << std::endl;
+            std::cerr << "Error occured! Error code = " << e.code() << ". Message: " << e.what() << '\n';
+            return e.code().value();
+        }
+        return 0;
+    }
+
     template <std::unsigned_integral T = uint>
     void handleClient(const T &port) noexcept
     {
@@ -59,7 +74,8 @@ protected:
                             : std::osyncstream(std::cout) << "\033[1;31mError! Data is incorrect\033[0m\033[1m\n";
                     }
 
-                    boost::asio::write(*sock.get(), boost::asio::buffer(str));
+                    if (handleWritingToSocket(sock, str))
+                        exit(EXIT_FAILURE);
                 }
             }
             // Clean-up
