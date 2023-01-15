@@ -167,7 +167,7 @@ while (true)
 ```
 
 This type of threads (std::jthread) automatically determine when they need to call funcs 'detach()' or 'join()'.
-In this example you may also notice the use of [synchorized output stream]().
+In this example you may also notice the use of [synchorized output stream](https://github.com/ViNN280801/client-server_boost.asio#synchorized-streams).
 
 ### Synchorized streams
 
