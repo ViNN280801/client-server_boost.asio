@@ -166,7 +166,12 @@ while (true)
 }
 ```
 
-This type of threads (std::jthread) automatically determine when they need to call funcs 'detach()' or 'join()'
+This type of threads (std::jthread) automatically determine when they need to call funcs 'detach()' or 'join()'.
+In this example you may also notice the use of [synchorized output stream]().
+
+### Synchorized streams
+
+[C++ 20 introduces](https://en.cppreference.com/w/cpp/header/syncstream) 'std::basic_osyncstream" with predefined type aliases "osyncstream" and "wosyncstream" for "char" and "wchar_t" streams, respectively, all defined in <syncstream>. The 'o' in these class names stands for output. These classes guarantee that all output done through them will appear in the final output stream the moment the synchronized stream is destroyed. It guarantees that the output cannot be interleaved by other output from other threads.
 
 ### Ranges
 
